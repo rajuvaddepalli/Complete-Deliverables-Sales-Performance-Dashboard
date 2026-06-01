@@ -1,0 +1,66 @@
+-- ============================================================
+-- SALES PERFORMANCE DASHBOARD
+-- Script 01: Schema Creation
+-- Author: [Your Name] | GitHub: [your-username]
+-- ============================================================
+
+CREATE DATABASE IF NOT EXISTS sales_db;
+USE sales_db;
+
+-- Orders / Sales Transactions
+CREATE TABLE IF NOT EXISTS sales_data (
+    order_id        VARCHAR(20)     NOT NULL,
+    order_date      DATE            NOT NULL,
+    ship_date       DATE,
+    customer_id     VARCHAR(15)     NOT NULL,
+    customer_name   VARCHAR(100),
+    segment         VARCHAR(30),
+    region          VARCHAR(20),
+    state           VARCHAR(50),
+    product_id      VARCHAR(20)     NOT NULL,
+    category        VARCHAR(50),
+    sub_category    VARCHAR(50),
+    product_name    VARCHAR(200),
+    sales           DECIMAL(12,2)   DEFAULT 0,
+    quantity        INT             DEFAULT 1,
+    discount        DECIMAL(5,2)    DEFAULT 0,
+    profit          DECIMAL(12,2)   DEFAULT 0,
+    sales_rep_id    VARCHAR(15),
+    sales_rep_name  VARCHAR(100),
+    PRIMARY KEY (order_id, product_id)
+);
+
+-- Customers Master
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id     VARCHAR(15)     PRIMARY KEY,
+    customer_name   VARCHAR(100),
+    segment         VARCHAR(30),
+    region          VARCHAR(20),
+    city            VARCHAR(100),
+    state           VARCHAR(50),
+    acquisition_date DATE
+);
+
+-- Products Catalogue
+CREATE TABLE IF NOT EXISTS products (
+    product_id      VARCHAR(20)     PRIMARY KEY,
+    product_name    VARCHAR(200),
+    category        VARCHAR(50),
+    sub_category    VARCHAR(50),
+    cost_price      DECIMAL(12,2),
+    list_price      DECIMAL(12,2)
+);
+
+-- Sales Targets (for vs-target analysis)
+CREATE TABLE IF NOT EXISTS sales_targets (
+    rep_id          VARCHAR(15),
+    target_year     INT,
+    target_quarter  INT,
+    target_amount   DECIMAL(12,2),
+    PRIMARY KEY (rep_id, target_year, target_quarter)
+);
+
+-- Load data from CSV (adjust path as needed)
+-- LOAD DATA INFILE '/path/to/sales_data.csv'
+-- INTO TABLE sales_data FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n' IGNORE 1 ROWS;
